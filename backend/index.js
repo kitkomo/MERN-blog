@@ -1,19 +1,24 @@
 import 'colors'
+import dotenv from 'dotenv'
 import express from 'express'
-import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
+import authMiddleware from './middleware/authMiddleware.js'
+import { signUpValidation } from './validation/authValidation.js'
+import { getProfile, signIn, signUp } from './controllers/UserController.js'
+
+dotenv.config()
+
+mongoose
+	.connect(process.env.MONGO_DB_URI)
+	.then(() => console.log('MongoDB is connected'.cyan.bold))
+	.catch(error => console.log(`Error: ${error}`.red.bold))
 
 const app = express()
-
 app.use(express.json())
 
-app.get('/', (req, res) => {
-	res.json('Hello World!')
-})
-
-// app.post('/auth/login', (req, res) => {
-// 	const { email, password } = req.body
-// 	res.json({ email, password, success: true })
-// })
+app.post('/auth/signup', signUpValidation, signUp)
+app.post('/auth/signin', signIn)
+app.get('/auth/profile', authMiddleware, getProfile)
 
 app.listen(5000, error => {
 	if (error) console.log(`Error: ${error}`.red.bold)
