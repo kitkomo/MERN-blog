@@ -17,6 +17,7 @@ To start working with a server provide a `.env` file with the following variable
 - `JWT_SECRET`
 - `MONGO_DB_URI`
 
+Scripts:
 - `npm run dev` - start server via nodemon in development mode
 - `npm run start` - start server via node.js
 
