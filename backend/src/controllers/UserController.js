@@ -1,16 +1,11 @@
-import { validationResult } from "express-validator"
-import { signUpValidation } from "../validation/authValidation.js"
-import UserModel from "../models/User.js"
-import authMiddleware from "../middleware/authMiddleware.js"
-import generateToken from "../utils/generateToken.js"
+import { validationResult } from 'express-validator'
+import { signUpValidation } from '../validation/authValidation.js'
+import UserModel from '../models/User.js'
+import authMiddleware from '../middleware/authMiddleware.js'
+import generateToken from '../utils/generateToken.js'
 
-export const signUp =  async (req, res) => {
+export const signUp = async (req, res) => {
 	try {
-		const errors = validationResult(req)
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() })
-		}
-
 		const passwordHash = await bcrypt.hash(req.body.password, 10)
 		const document = new UserModel({ ...req.body, password: passwordHash })
 
@@ -68,8 +63,8 @@ export const signIn = async (req, res) => {
 
 export const getProfile = async (req, res) => {
 	try {
-		const {_doc} = await UserModel.findById(req.userId)
-		const {password, ...user} = _doc
+		const { _doc } = await UserModel.findById(req.userId)
+		const { password, ...user } = _doc
 
 		if (!user) {
 			res.status(404).json({

@@ -17,3 +17,10 @@ export const signUpValidation = [
 		.withMessage('Last name must be at least 2 characters long'),
 	body('avatar').optional().isURL().withMessage('Avatar must be a valid URL')
 ]
+
+export const signInValidation = [
+	body('email').isEmail().withMessage('Email is invalid'),
+	body('password')
+		.isLength({ min: 6 })
+		.withMessage('Password must be at least 6 characters long'),
+]
