@@ -1,5 +1,6 @@
 import 'colors'
 import dotenv from 'dotenv'
+import fs from 'fs'
 import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
@@ -18,6 +19,11 @@ import {
 } from './validation/authValidation.js'
 import { postCreateValidation } from './validation/postValidation.js'
 import ValidationErrorsMiddleware from './middleware/ValidationErrorsMiddleware.js'
+
+if (!fs.existsSync('uploads')) {
+	fs.mkdirSync('uploads')
+	console.log('Uploads folder created'.gray.bold)
+}
 
 dotenv.config()
 
