@@ -1,5 +1,6 @@
 import 'colors'
 import dotenv from 'dotenv'
+import cors from 'cors'
 import fs from 'fs'
 import express from 'express'
 import mongoose from 'mongoose'
@@ -35,6 +36,7 @@ mongoose
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 const storage = multer.diskStorage({
@@ -49,12 +51,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 //auth
-app.post('/auth/signup', signUpValidation, ValidationErrorsMiddleware, signUp)
-app.post('/auth/signin', signInValidation, ValidationErrorsMiddleware, signIn)
-app.get('/auth/profile', authMiddleware, getProfile)
+app.post('/api/auth/signup', signUpValidation, ValidationErrorsMiddleware, signUp)
+app.post('/api/auth/signin', signInValidation, ValidationErrorsMiddleware, signIn)
+app.get('/api/auth/profile', authMiddleware, getProfile)
 //posts
-app.get('/posts', getAllPosts)
-app.get('/posts/:id', getOnePost)
+app.get('/api/posts', getAllPosts)
+app.get('/api/posts/:id', getOnePost)
 app.post(
 	'/posts',
 	authMiddleware,
@@ -62,16 +64,16 @@ app.post(
 	ValidationErrorsMiddleware,
 	createPost
 )
-app.delete('/posts/:id', authMiddleware, deletePost)
+app.delete('/api/posts/:id', authMiddleware, deletePost)
 app.patch(
-	'/posts/:id',
+	'/api/posts/:id',
 	authMiddleware,
 	postCreateValidation,
 	ValidationErrorsMiddleware,
 	updatePost
 )
 //upload
-app.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
+app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
 	res.json({
 		message: 'Image uploaded successfully',
 		imageURL: `/uploads/${req.file.originalname}`
