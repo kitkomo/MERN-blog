@@ -10,6 +10,7 @@ import {
 	createPost,
 	deletePost,
 	getAllPosts,
+	getLastTags,
 	getOnePost,
 	updatePost
 } from './controllers/PostController.js'
@@ -72,6 +73,8 @@ app.patch(
 	ValidationErrorsMiddleware,
 	updatePost
 )
+//tags
+app.get('/api/tags', getLastTags)
 //upload
 app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
 	res.json({
