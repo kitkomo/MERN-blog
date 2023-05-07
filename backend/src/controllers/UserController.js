@@ -1,4 +1,5 @@
 import { validationResult } from 'express-validator'
+import bcrypt from 'bcrypt'
 import { signUpValidation } from '../validation/authValidation.js'
 import UserModel from '../models/User.js'
 import authMiddleware from '../middleware/authMiddleware.js'
@@ -38,7 +39,10 @@ export const signIn = async (req, res) => {
 			})
 		}
 
-		const isPasswordCorrect = bcrypt.compare(req.body.password, user.password)
+		const isPasswordCorrect = await bcrypt.compare(
+			req.body.password,
+			user.password
+		)
 
 		if (!isPasswordCorrect) {
 			return res.status(403).json({
@@ -62,6 +66,7 @@ export const signIn = async (req, res) => {
 }
 
 export const getProfile = async (req, res) => {
+		console.log(req.userId)
 	try {
 		const { _doc } = await UserModel.findById(req.userId)
 		const { password, ...user } = _doc

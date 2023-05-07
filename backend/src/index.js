@@ -52,14 +52,24 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 //auth
-app.post('/api/auth/signup', signUpValidation, ValidationErrorsMiddleware, signUp)
-app.post('/api/auth/signin', signInValidation, ValidationErrorsMiddleware, signIn)
+app.post(
+	'/api/auth/signup',
+	signUpValidation,
+	ValidationErrorsMiddleware,
+	signUp
+)
+app.post(
+	'/api/auth/signin',
+	signInValidation,
+	ValidationErrorsMiddleware,
+	signIn
+)
 app.get('/api/auth/profile', authMiddleware, getProfile)
 //posts
 app.get('/api/posts', getAllPosts)
 app.get('/api/posts/:id', getOnePost)
 app.post(
-	'/posts',
+	'/api/posts',
 	authMiddleware,
 	postCreateValidation,
 	ValidationErrorsMiddleware,
@@ -79,7 +89,9 @@ app.get('/api/tags', getLastTags)
 app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
 	res.json({
 		message: 'Image uploaded successfully',
-		imageURL: `/uploads/${req.file.originalname}`
+		imageURL: `${process.env.HOST}${process.env.PORT || 8000}/uploads/${
+			req.file.originalname
+		}`
 	})
 })
 
