@@ -2,6 +2,7 @@
   input {
     font-size: 42px;
     font-weight: 900;
+    text-transform: capitalize;
   }
 
   div {
@@ -27,6 +28,7 @@
     .cm-s-easymde {
       border: 0;
       font-size: 22px;
+      text-transform: capitalize;
     }
     .editor-toolbar {
       border: 0;
